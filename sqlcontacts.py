@@ -40,7 +40,7 @@ class PhoneBook:
         res = res.fetchone()
         if not res:
             raise KeyError
-        return res[0]
+        return int(res[0])
 
     def update(self, name, phone):
         """
