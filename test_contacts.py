@@ -1,23 +1,38 @@
+"""
+tests docstring
+"""
 import pytest
 import sqlcontacts
 
 
 def test_create():
-    p = sqlcontacts.PhoneBook()
-    p.create("Bill", 911)
-    assert p.read('Bill') == 911
+    """
+
+    :return:
+    """
+    phone_b = sqlcontacts.PhoneBook()
+    phone_b.create("Bill", 911)
+    assert phone_b.read('Bill') == 911
 
 
 def test_update():
-    p = sqlcontacts.PhoneBook()
-    p.create("Bill", 911)
-    p.update("Bill", 112)
-    assert p.read('Bill') == 112
+    """
+
+    :return:
+    """
+    phone_b = sqlcontacts.PhoneBook()
+    phone_b.create("Bill", 911)
+    phone_b.update("Bill", 112)
+    assert phone_b.read('Bill') == 112
 
 
 def test_delete():
-    p = sqlcontacts.PhoneBook()
-    p.create("Bill", 911)
-    p.delete("Bill")
+    """
+
+    :return:
+    """
+    phone_b = sqlcontacts.PhoneBook()
+    phone_b.create("Bill", 911)
+    phone_b.delete("Bill")
     with pytest.raises(KeyError):
-        p.read('Bill')
+        phone_b.read('Bill')
