@@ -1,12 +1,72 @@
+"""
+Realisation phone book model.
+Classes
+-------
+PhoneBook
+"""
+import sqlite3
+
+
 class PhoneBook:
+    """
+    PhoneBook logic realisation
+    Attributes
+    ----------
+    Methods
+    -------
+    create()
+    read()
+    update()
+    delete()
+    """
+    def __init__(self):
+        self._conn = sqlite3.connect(":memory:")
+        self._cursor = self._conn.cursor()
+        try:
+            self._cursor.execute("""create table contacts (
+            id integer primary key,
+            name varchar(30) unique,
+            phone int
+            )""")
+        except sqlite3.OperationalError:
+            pass
+
     def create(self, name, phone):
-        pass
+        """
+        Create record in phone book
+        """
+        sql = "insert into contacts (name, phone) values (?, ?)"
+        try:
+            self._cursor.execute(sql, (name, phone))
+            self._conn.commit()
+        except sqlite3.IntegrityError:
+            raise KeyError
 
     def read(self, name):
-        pass
+        """
+        Read record from phone book
+        """
+        sql = "select phone from contacts where name=?"
+        result = self._cursor.execute(sql, (name,))
+        result = result.fetchone()
+        if not result:
+            raise KeyError
+        return result[0]
 
     def update(self, name, phone):
-        pass
+        """
+        Update record in phone book
+        """
+        self.read(name)
+        sql = "update contacts set phone=? where name=?"
+        self._cursor.execute(sql, (phone, name))
+        self._conn.commit()
 
     def delete(self, name):
-        pass
+        """
+        Delete record from phone book
+        """
+        self.read(name)
+        sql = "delete from contacts where name=?"
+        self._cursor.execute(sql, (name,))
+        self._conn.commit()
