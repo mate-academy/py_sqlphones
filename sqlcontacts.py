@@ -25,7 +25,7 @@ class PhoneBook:
             self._conn.execute("""create table contacts (
             id integer primary key,
             name varchar(30) unique,
-            phone int
+            phone varchar(30)
             )""")
 
         except sqlite3.OperationalError:
@@ -51,7 +51,7 @@ class PhoneBook:
         result = result.fetchone()
         if not result:
             raise KeyError
-        return result[0]
+        return int(result[0])
 
     def update(self, name, phone):
         """
