@@ -6,5 +6,5 @@ install:
 script:
   - pytest
   - flake8 
-  - pylint 
+  - pylint db_func, sqlcontacts, interface, main
   - mypy --ignore-missing-imports .

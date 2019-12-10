@@ -1,16 +1,17 @@
 """
 Controller
 """
+import db_func as db
 from interface import Interface
 from sqlcontacts import PhoneBook
 
 
-def main_menu():
+def main_menu(con):
     """
     Main function where we create menu and receive input.
     :return: None
     """
-    phone_book = PhoneBook()
+    phone_book = PhoneBook(con)
     interface = Interface(phone_book)
     try:
         while True:
@@ -43,4 +44,6 @@ Please enter your choice: """)
 
 
 if __name__ == "__main__":
-    main_menu()
+    CON_NAME = "phonebook.sqllite"
+    db.create_db(CON_NAME)
+    main_menu(CON_NAME)
