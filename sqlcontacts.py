@@ -27,15 +27,15 @@ class PhoneBook:
         """
         return db.get_phone_from_phone_book(self._con_name, (contact_name,))
 
-    def create_new_record(self, record_id, new_contact_name, new_contact_phone):
+    def create_new_record(self, record_id, new_cont_name, new_cont_phone):
         """
         Add a new record to the phone book that avoids to add duplicates.
-        :param new_contact_name: str
-        :param new_contact_phone: int
+        :param new_cont_name: str
+        :param new_cont_phone: int
         :return: None
         """
         db.add_new_record_to_db(self._con_name,
-                                (record_id, new_contact_name, new_contact_phone))
+                                (record_id, new_cont_name, new_cont_phone))
 
     def remove_record_by_name(self, contact_name):
         """
