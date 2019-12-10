@@ -56,3 +56,7 @@ def update(phone_book):
     name = input('Please enter name (update): ')
     phone = input('Please enter phone number: ')
     phone_book.update(name, phone)
+
+
+if __name__ == '__main__':
+    interface()
