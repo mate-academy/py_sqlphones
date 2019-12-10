@@ -14,22 +14,32 @@ def main():
     q - quit
     """)
         action = input("?").lower()
-        if action == 'q':
-            break
-        if action == 'c':
-            name = input("Name: ")
-            number = input("Number: ")
-            print(phone_book.create(name, number))
-        if action == "r":
-            name = input("Name: ")
-            print(phone_book.read(name))
-        if action == "u":
-            name = input("Name: ")
-            number = input("Number: ")
-            print(phone_book.update(name, number))
-        if action == "d":
-            name = input("Name: ")
-            print(phone_book.delete(name))
+        try:
+            if action == 'q':
+                break
+            if action == 'c':
+                name = input("Name: ")
+                number = input("Number: ")
+                phone_book.create(name, number)
+                print("Added")
+            elif action == "r":
+                name = input("Name: ")
+                print(phone_book.read(name))
+            elif action == "u":
+                name = input("Name: ")
+                number = input("Number: ")
+                phone_book.update(name, number)
+                print("Updated")
+            elif action == "d":
+                name = input("Name: ")
+                phone_book.delete(name)
+                print("Deleted")
+            else:
+                print("Incorrect action.Try again")
+        except KeyError:
+            print("Number not in phone book or number must be unique")
+        except ValueError:
+            print("Invalid input")
 
 
 if __name__ == "__main__":

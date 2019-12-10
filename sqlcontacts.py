@@ -8,7 +8,7 @@ class PhoneBook:
         self.data_base = sqlite3.connect(":memory:")
         self.data_base.execute("""create table phone_book
             (id integer primary key,
-            name varchar(30),
+            name varchar(30) unique,
             phone varchar(30)
             )""")
 
@@ -17,14 +17,16 @@ class PhoneBook:
         Create new contact in phone book.
         :param name: name of contact
         :param phone: phone number of contact
-        :return: string report to user
+        :return: None
         :raise ValueError in case of invalid number or name
         """
         if not name or not phone:
             raise ValueError
-        self.data_base.execute("""insert into phone_book
-                            (name, phone) values (?, ?)""", (name, phone))
-        return "Added"
+        try:
+            self.data_base.execute("""insert into phone_book
+                                (name, phone) values (?, ?)""", (name, phone))
+        except sqlite3.IntegrityError:
+            raise KeyError
 
     def read(self, name):
         """
@@ -33,44 +35,36 @@ class PhoneBook:
         :return: phone of specified contact
         :raise KeyError if contact doesnt exist
         """
-        cursor = self.data_base.execute("""select name, phone from phone_book
-                                        where name=?""", (name,))
-        cursor = cursor.fetchall()
-        if not cursor:
+        row = self.data_base.execute("""select name, phone from phone_book
+                                        where name=?""", (name,)).fetchone()
+        if not row:
             raise KeyError
-        return int(cursor[0][1])
+        return int(row[1])
 
     def update(self, name, phone):
         """
         Update contact in phone book
         :param name: name to update
         :param phone: phone number to update
-        :return: string report to user
+        :return: None
         :raise: KeyError if contact doesnt exist
         """
-
-        cursor = self.data_base.execute("""select id, name from phone_book
-                                        where name=?""", (name,))
-        cursor = cursor.fetchall()
-        if not cursor:
+        row = self.data_base.execute("""select name, phone from phone_book
+                                        where name=?""", (name,)).fetchone()
+        if not row:
             raise KeyError
-        id_ = cursor[0][0]
         self.data_base.execute("""update phone_book set phone=?
-                                        where id=?""", (phone, id_))
-        return "Updated"
+                                        where name=?""", (phone, name))
 
     def delete(self, name):
         """
         Delete contact from phone book
         :param name: name of contact
-        :return: string report to user
+        :return: None
         :raise: KeyError if contact doesnt exist
         """
-        cursor = self.data_base.execute("""select id, name from phone_book
-                                        where name=?""", (name,))
-        cursor = cursor.fetchall()
-        if not cursor:
+        row = self.data_base.execute("""select name from phone_book
+                                        where name=?""", (name,)).fetchone()
+        if not row:
             raise KeyError
-        id_ = cursor[0][0]
-        self.data_base.execute("delete from phone_book where id=?", (id_,))
-        return "Deleted"
+        self.data_base.execute("delete from phone_book where name=?", (name,))
