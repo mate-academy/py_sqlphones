@@ -31,6 +31,14 @@ class PhoneBook:
         except sqlite3.OperationalError:
             pass
 
+    def _empty_checker(self, name):
+        """empty checker"""
+        try:
+            sql = "select name from contacts where name=?"
+            return self._conn.execute(sql, (name,)).fetchone()[0]
+        except TypeError:
+            raise KeyError
+
     def create(self, name, phone):
         """
         Create record in phone book
@@ -46,18 +54,18 @@ class PhoneBook:
         """
         Read record from phone book
         """
-        sql = "select phone from contacts where name=?"
-        result = self._conn.execute(sql, (name,))
-        result = result.fetchone()
-        if not result:
+        try:
+            sql = "select phone from contacts where name=?"
+            phone = self._conn.execute(sql, (name,)).fetchone()[0]
+            return int(phone)
+        except TypeError:
             raise KeyError
-        return int(result[0])
 
     def update(self, name, phone):
         """
         Update record in phone book
         """
-        self.read(name)
+        self._empty_checker(name)
         sql = "update contacts set phone=? where name=?"
         self._conn.execute(sql, (phone, name))
         self._conn.commit()
@@ -66,7 +74,7 @@ class PhoneBook:
         """
         Delete record from phone book
         """
-        self.read(name)
+        self._empty_checker(name)
         sql = "delete from contacts where name=?"
         self._conn.execute(sql, (name,))
         self._conn.commit()
