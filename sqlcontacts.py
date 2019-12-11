@@ -50,8 +50,7 @@ class PhoneBook:
         :return: None
         :raise: KeyError if contact doesnt exist
         """
-        if not self.contact_in_book(name):
-            raise KeyError
+        self.contact_in_book(name)
         self.data_base.execute("""update phone_book set phone=?
                                         where name=?""", (phone, name))
 
@@ -62,15 +61,15 @@ class PhoneBook:
         :return: None
         :raise: KeyError if contact doesnt exist
         """
-        if not self.contact_in_book(name):
-            raise KeyError
+        self.contact_in_book(name)
         self.data_base.execute("delete from phone_book where name=?", (name,))
 
     def contact_in_book(self, name):
         """
         :param name: str
-        :return: name from phone book
-        :return: [] if name not in phone book
+        :return: None
+        :raise KeyError if name not in phone book
         """
-        return self.data_base.execute("""select name from phone_book
-                                        where name=?""", (name,)).fetchone()
+        if not self.data_base.execute("""select name from phone_book
+                                        where name=?""", (name,)).fetchone():
+            raise KeyError
