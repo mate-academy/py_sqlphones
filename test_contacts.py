@@ -1,23 +1,39 @@
-import pytest
-import sqlcontacts
+"""
+Test module.
+"""
+
+from db_func import PhoneBookDatabase
+from sqlcontacts import PhoneBook
+
+CON_NAME = "phonebook.sqllite"
+PhoneBookDatabase.create_db(con_name=CON_NAME)
+PHONE = PhoneBook(con_name=CON_NAME)
 
 
 def test_create():
-    p = sqlcontacts.PhoneBook()
-    p.create("Bill", 911)
-    assert p.read('Bill') == 911
+    """
+    Test creation record in database.
+    :return: bool
+    """
+    PHONE.create_new_record(1, "Bill", 911)
+    assert PHONE.get_phone_by_name('Bill') == [(911,)]
 
 
 def test_update():
-    p = sqlcontacts.PhoneBook()
-    p.create("Bill", 911)
-    p.update("Bill", 112)
-    assert p.read('Bill') == 112
+    """
+    Test record update in database.
+    :return: bool
+    """
+    PHONE.create_new_record(2, "Bill2", 912)
+    PHONE.update_record_by_name("Bill2", 112)
+    assert PHONE.get_phone_by_name('Bill2') == [(112,)]
 
 
 def test_delete():
-    p = sqlcontacts.PhoneBook()
-    p.create("Bill", 911)
-    p.delete("Bill")
-    with pytest.raises(KeyError):
-        p.read('Bill')
+    """
+    Test record deletion in database.
+    :return: bool
+    """
+    PHONE.create_new_record(3, "Bill3", 913)
+    PHONE.remove_record_by_name("Bill3")
+    assert PHONE.get_phone_by_name('Bill3') == []
