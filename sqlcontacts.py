@@ -31,6 +31,10 @@ class PhoneBook:
 
     def update(self, name, phone):
         """Update phone number"""
+        cur = self.database.execute("""select name \
+                from phonebook where name=?""", (name,))
+        if not cur:
+            raise KeyError
         self.database.execute("""update phonebook set phone=? \
          where name=?""", (phone, name))
 
