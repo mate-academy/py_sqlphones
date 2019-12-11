@@ -2,15 +2,16 @@
 import sqlite3
 
 
+DATA_BASE = sqlite3.connect(":memory:")
+
+
 class PhoneBook:
     """Class to represent phone book"""
     def __init__(self):
-        self.data_base = sqlite3.connect(":memory:")
-        self.data_base.execute("""create table phone_book
-            (id integer primary key,
-            name varchar(30) unique,
-            phone varchar(30)
-            )""")
+        self.data_base = DATA_BASE.execute("""create table phone_book
+               (name varchar(30) unique,
+               phone varchar(30)
+               )""")
 
     def create(self, name, phone):
         """
