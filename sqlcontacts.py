@@ -1,7 +1,7 @@
 """
 Model
 """
-import db_func as db
+from db_func import PhoneBookDatabase
 
 
 class PhoneBook:
@@ -17,7 +17,7 @@ class PhoneBook:
         Get phone book dictionary.
         :return: dict
         """
-        return db.get_all_records_from_phone_book(self._con_name)
+        return PhoneBookDatabase.get_all_records_from_pb(self._con_name)
 
     def get_phone_by_name(self, contact_name):
         """
@@ -25,7 +25,8 @@ class PhoneBook:
         :param contact_name: str
         :return: int
         """
-        return db.get_phone_from_phone_book(self._con_name, (contact_name,))
+        return PhoneBookDatabase.get_phone_from_pb(self._con_name,
+                                                   (contact_name,))
 
     def create_new_record(self, record_id, new_cont_name, new_cont_phone):
         """
@@ -34,8 +35,9 @@ class PhoneBook:
         :param new_cont_phone: int
         :return: None
         """
-        db.add_new_record_to_db(self._con_name,
-                                (record_id, new_cont_name, new_cont_phone))
+        PhoneBookDatabase.add_new_record_to_db(self._con_name,
+                                               (record_id, new_cont_name,
+                                                new_cont_phone))
 
     def remove_record_by_name(self, contact_name):
         """
@@ -43,7 +45,8 @@ class PhoneBook:
         :param contact_name: str
         :return: None
         """
-        db.delete_record_from_phone_book(self._con_name, (contact_name,))
+        PhoneBookDatabase.delete_record_from_pb(self._con_name,
+                                                (contact_name,))
 
     def update_record_by_name(self, contact_name, new_phone_number):
         """
@@ -52,5 +55,5 @@ class PhoneBook:
         :param new_phone_number: int
         :return: None
         """
-        db.update_record_in_phone_book(self._con_name,
-                                       (new_phone_number, contact_name))
+        PhoneBookDatabase.update_record_in_pb(self._con_name,
+                                              (new_phone_number, contact_name))

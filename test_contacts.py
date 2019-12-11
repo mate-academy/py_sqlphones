@@ -2,12 +2,12 @@
 Test module.
 """
 
-import db_func as db
-import sqlcontacts
+from db_func import PhoneBookDatabase
+from sqlcontacts import PhoneBook
 
 CON_NAME = "phonebook.sqllite"
-db.create_db(CON_NAME)
-PHONE = sqlcontacts.PhoneBook(CON_NAME)
+PhoneBookDatabase.create_db(con_name=CON_NAME)
+PHONE = PhoneBook(con_name=CON_NAME)
 
 
 def test_create():

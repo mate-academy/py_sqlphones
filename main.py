@@ -1,7 +1,7 @@
 """
 Controller
 """
-import db_func as db
+from db_func import PhoneBookDatabase
 from interface import Interface
 from sqlcontacts import PhoneBook
 
@@ -45,5 +45,5 @@ Please enter your choice: """)
 
 if __name__ == "__main__":
     CON_NAME = "phonebook.sqllite"
-    db.create_db(CON_NAME)
+    PhoneBookDatabase.create_db(con_name=CON_NAME)
     main_menu(CON_NAME)
