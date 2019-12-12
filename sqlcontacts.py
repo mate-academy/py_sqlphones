@@ -17,6 +17,10 @@ class PhoneBook:
 
     def create(self, name, phone):
         """Create new name and phone"""
+        cur = self.database.execute("""select name \
+                        from phonebook where name=?""", (name,))
+        if cur.fetchone():
+            raise KeyError
         self.database.execute("""insert into phonebook \
             (name, phone) values (?, ?)""", (name, phone))
 
@@ -33,11 +37,15 @@ class PhoneBook:
         """Update phone number"""
         cur = self.database.execute("""select name \
                 from phonebook where name=?""", (name,))
-        if not cur:
+        if not cur.fetchone():
             raise KeyError
         self.database.execute("""update phonebook set phone=? \
          where name=?""", (phone, name))
 
     def delete(self, name):
         """Delete name"""
+        cur = self.database.execute("""select name \
+                from phonebook where name=?""", (name,))
+        if not cur.fetchone():
+            raise KeyError
         self.database.execute("delete from phonebook where name=?", (name,))
