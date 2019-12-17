@@ -31,7 +31,7 @@ class PhoneBook:
         '''Read contact from db'''
         sql = "SELECT * FROM phone_data WHERE Name_contact=?"
         self.cursor.execute(sql, (name,))
-        if self.cursor.fetchone() != None:
+        if self.cursor.fetchone() is not None:
             sql_read = "SELECT Number_contact FROM phone_data " \
                        "WHERE Name_contact=?"
             self.cursor.execute(sql_read, (name,))
